@@ -1,9 +1,15 @@
+import Slide from "../components/general/Slide"
+import About from "../components/general/About"
+import Bestseller from "../components/general/Bestseller"
+
 const Home = () => {
 
     return(
-        <section>
-            Home
-        </section>
+        <main>
+            <Slide />
+            <About />
+            <Bestseller />
+        </main>
     )
 }
 

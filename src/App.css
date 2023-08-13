@@ -2,3 +2,20 @@ nav img{
   height: 50px;
 }
 .bg-coffee{ background-color: #634646;}
+
+.slide {
+  background: #ffcccc;
+  padding-bottom: 0px;
+  padding-top: 95px;
+  }
+  
+  .bg-rosado{
+    background-color: #ffcccc;
+  }
+  .bg-celeste{
+    background-color: #97e8dc;
+  }
+  
+  .bg-verdeclaro{
+    background-color: #c2e8ae;
+  }
