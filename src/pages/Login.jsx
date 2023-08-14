@@ -37,12 +37,9 @@ const Login = () => {
             dispatch({
                 type: types.setUserState,
                 payload: data,
-                //payload: user <- ENVIAR CORREO Y PW
             })
-
-            //setUser(initialUser)
             window.alert('Usuario logueado')
-            navigate('/dashboard-client')
+            navigate(`/dashboard-${data.typeUser}`)
         } catch (error) {
             window.alert('Error login')
 
@@ -69,7 +66,7 @@ const Login = () => {
                             </div>
                             <div className="input-group mb-2">
                                 <label htmlFor="password" className="input-group-text col-12 col-lg-4 col-md-5 col-sm-6 bg-verdeclaro">Contraseña:</label>
-                                <input type="password" className="form-control" id="password" name="password" placeholder="Ingrese su contraseña" aria-label="password" required onChange={handleChange} />
+                                <input type="password" className="form-control" id="password" name="password" placeholder="Ingrese su contraseña" aria-label="password" required onChange={handleChange}  />
                             </div>
                             <button type="submit" className="btn btn-primary">Ingresar</button>
                         </form>

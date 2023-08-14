@@ -1,8 +1,13 @@
 import { NavLink } from "react-router-dom"
+import { useContext } from "react"
+import { UserContext } from "../../context/user/userContext"
+import Logout from "./Logout"
 const Navbar = () => {
 
+  const [user, ] = useContext(UserContext)
+
     return(
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav id="navbar-general" className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
     <a className="navbar-brand" href="#">
     <img src="logo_cpd.svg" className="w-100" />
@@ -14,6 +19,9 @@ const Navbar = () => {
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
         <NavLink className="nav-link active" aria-current="page" to="/">Home</NavLink>
+        </li>
+        <li className="nav-item">
+        <NavLink className="nav-link" to="/#about">Sobre mi</NavLink>
         </li>
         <li className="nav-item">
         <NavLink className="nav-link" aria-current="page" to="/reservation">Reservas</NavLink>
@@ -29,8 +37,12 @@ const Navbar = () => {
         
       </ul>
       <div>
-      <NavLink className="nav-link" aria-current="page" to="/login">Iniciar Sesión</NavLink>
-
+      {//(user) ? 
+      (user?.users?.length > 0) ?
+      (<Logout />
+      ) : 
+      (<NavLink className="nav-link" aria-current="page" to="/login"><button type="button" class="btn btn-primary">Iniciar Sesión</button></NavLink>)}
+      
       </div>
     </div>
   </div>

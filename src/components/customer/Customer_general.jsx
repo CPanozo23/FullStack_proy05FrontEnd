@@ -1,9 +1,11 @@
 const Customer_general = () => {
 
     return(
-        <section>
-            Customer_general
-        </section>
+        <article>
+            <div>
+                <h2>Reservas realizadas</h2>
+            </div>
+        </article>
     )
 }
 

@@ -8,13 +8,13 @@ const Home = () => {
     const [user, ] = useContext(UserContext)
 
     return(
-        <main>
+        <main data-bs-spy="scroll" data-bs-target="#navbar-general" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
             {(user) ? (<div>
                     {JSON.stringify(user, null, 2)}
                 </div>
                 ) : (<div><p>Usuario no disponible</p></div>)}
             <Slide />
-            <About />
+            <About id="about" />
             <Bestseller />
         </main>
     )

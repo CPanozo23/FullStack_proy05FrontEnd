@@ -51,6 +51,7 @@ const Register = () => {
                 payload: data,
             })
             window.alert("Usuario registrado")
+            navigate('/dashboard-client')
         } catch (error) {
             console.log(error)
             window.alert("Error al realizar el registro")

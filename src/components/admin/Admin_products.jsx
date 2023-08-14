@@ -1,10 +1,11 @@
-const Customer_general = () => {
+const Customer_products = () => {
 
     return(
         <section>
-            Customer_general
+            <h1>PRODUCTOS</h1>
+            <p>(CRUD)</p>
         </section>
     )
 }
 
-export default Customer_general
+export default Customer_products
