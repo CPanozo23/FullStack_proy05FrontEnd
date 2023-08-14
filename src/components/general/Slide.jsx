@@ -1,3 +1,4 @@
+import line from '/linea.svg'
 const Slide  = () =>{
 
     return (
@@ -10,7 +11,7 @@ const Slide  = () =>{
                 <p className="fs-1">¿Tienes conflictos y necesitas ayuda para resolverlos?</p>
             </div>
         </div>
-            <img src="linea.svg" className="" />
+            <img src={line} className="" />
             </section>
     )
 }
