@@ -1,17 +1,26 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { UserContext } from '../context/user/userContext'
+
 import line from '/linea.svg'
+import { types } from '../context/user/userReducer'
+import axios from "axios"
+
 
 const Register = () => {
+    const [, dispatch] = useContext(UserContext)
 
     //1- CREAR OBJETO VACÍO
     const initialUser = {
         name: "",
         lastName: "",
         birthday: "",
+        phone: "",
+        address: "",
         email:"",
         password: "",
         passwordVerify:""
     }
+
     //2- RECONOCER LO INGRESADO EN FORMULARIO
     const [formUser, setFormUser] = useState(initialUser)
 
@@ -30,20 +39,22 @@ const Register = () => {
         if (formUser.password === formUser.passwordVerify){
             //4- CONECTARSE Y CREAR OBJETO
             console.log("Creado")
-            /*try {
-            const { data } = await axios.post('http://localhost:4000/users', formUser, {
-                headers:{
+            try {
+            const { data } = await axios.post('http://localhost:4000/users/signup', formUser, {
+                headers:
+                    {
                     'Content-Type': 'application/json'
                 }
             })
             dispatch({
                 type: types.setUserState,
-                payload: data
+                payload: data,
             })
             window.alert("Usuario registrado")
         } catch (error) {
+            console.log(error)
             window.alert("Error al realizar el registro")
-        }*/
+        }
         }else{
             //5- CLAVE NO VERIFICADA QUE SEA IGUAL
             console.log("No ingresó la misma clave")
@@ -74,6 +85,14 @@ const Register = () => {
                                 <input type="date" className="form-control" id="birthday" name="birthday" aria-label="birthday" required onChange={handleChange} />
                             </div>
 
+                            <div className="input-group mb-2">
+                                <label htmlFor="phone" className="input-group-text col-12 col-lg-4 col-md-5 col-sm-6 bg-verdeclaro">Teléfono:</label>
+                                <input type="text" className="form-control" id="phone" name="phone" placeholder="Ingrese su teléfono" aria-label="phone" required onChange={handleChange} />
+                            </div>
+                            <div className="input-group mb-2">
+                                <label htmlFor="address" className="input-group-text col-12 col-lg-4 col-md-5 col-sm-6 bg-verdeclaro">Dirección:</label>
+                                <input type="text" className="form-control" id="lastName" name="address" placeholder="Ingrese su dirección" aria-label="address" required onChange={handleChange} />
+                            </div>
                             <div className="input-group mb-2">
                                 <label htmlFor="email" className="input-group-text col-12 col-lg-4 col-md-5 col-sm-6 bg-verdeclaro">E-mail:</label>
                                 <input type="email" className="form-control" id="email" name="email" placeholder="Ingrese su email" aria-label="email" required onChange={handleChange} />
