@@ -34,14 +34,26 @@ const Navbar = () => {
             <li><a className="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
-        
+        {
+      (user?.users?.length > 0) ?
+      ( 
+      <li className="nav-item">
+        <NavLink className="nav-link" aria-current="page" to="/dashboard-admin">
+          Dashboard
+        </NavLink>
+        </li>
+   
+      ) : 
+      ('')}
+      
       </ul>
       <div>
       {//(user) ? 
       (user?.users?.length > 0) ?
-      (<Logout />
+      ( 
+        <Logout />
       ) : 
-      (<NavLink className="nav-link" aria-current="page" to="/login"><button type="button" class="btn btn-primary">Iniciar Sesión</button></NavLink>)}
+      (<NavLink className="nav-link" aria-current="page" to="/login"><button type="button" className="btn btn-primary">Iniciar Sesión</button></NavLink>)}
       
       </div>
     </div>

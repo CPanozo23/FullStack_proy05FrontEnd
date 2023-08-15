@@ -4,10 +4,12 @@ import { UserContext } from '../context/user/userContext'
 import line from '/linea.svg'
 import { types } from '../context/user/userReducer'
 import axios from "axios"
+import { NavLink, useNavigate } from "react-router-dom"
 
 
 const Register = () => {
     const [, dispatch] = useContext(UserContext)
+    const navigate = useNavigate()
 
     //1- CREAR OBJETO VACÍO
     const initialUser = {
@@ -51,7 +53,7 @@ const Register = () => {
                 payload: data,
             })
             window.alert("Usuario registrado")
-            navigate('/dashboard-client')
+            navigate('/login')
         } catch (error) {
             console.log(error)
             window.alert("Error al realizar el registro")
