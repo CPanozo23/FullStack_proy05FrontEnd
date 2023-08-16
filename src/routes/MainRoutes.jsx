@@ -20,6 +20,7 @@ const MainRoutes = () => {
             <Route path='/dashboard-admin' element={<Dashboard_admin />} />
             <Route path='/*' element={<h1>Not Found</h1>} />
         </Routes>
+        //Con el type de usuario proteger
     )
 }
 

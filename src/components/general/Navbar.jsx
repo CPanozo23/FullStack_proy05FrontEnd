@@ -5,7 +5,10 @@ import Logout from "./Logout"
 const Navbar = () => {
 
   const [user, ] = useContext(UserContext)
-
+  console.log("tipo", user)
+  if(user?.user?.typeUser === undefined){console.log("Es indefinido")}
+  if(user?.user?.typeUser === "admin"){console.log("Es admin")}
+  if(user?.user?.typeUser === "client"){console.log("Es cliente")}
     return(
         <nav id="navbar-general" className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
@@ -33,28 +36,20 @@ const Navbar = () => {
             <li><a className="dropdown-item" href="#">Another action</a></li>
             <li><a className="dropdown-item" href="#">Something else here</a></li>
           </ul>
-        </li>
-        {
-      (user?.users?.length > 0) ?
-      ( 
-      <li className="nav-item">
-        <NavLink className="nav-link" aria-current="page" to="/dashboard-admin">
-          Dashboard
-        </NavLink>
-        </li>
-   
-      ) : 
-      ('')}
-      
+        </li>      
       </ul>
       <div>
+      
       {//(user) ? 
-      (user?.users?.length > 0) ?
+      (user?.user?.typeUser === undefined) ?
+      (<NavLink className="nav-link" aria-current="page" to="/login"><button type="button" className="btn btn-primary">Iniciar Sesión</button></NavLink>)
+      :
       ( 
         <Logout />
-      ) : 
-      (<NavLink className="nav-link" aria-current="page" to="/login"><button type="button" className="btn btn-primary">Iniciar Sesión</button></NavLink>)}
-      
+      )  
+      }
+
+
       </div>
     </div>
   </div>

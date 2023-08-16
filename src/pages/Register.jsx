@@ -62,7 +62,7 @@ const Register = () => {
             //5- CLAVE NO VERIFICADA QUE SEA IGUAL
             console.log("No ingresó la misma clave")
         }
-        console.log(formUser.password === formUser.passwordVerify)
+        //console.log(formUser.password === formUser.passwordVerify)
     }
     return (
         <div className='mt-2'>
@@ -118,7 +118,6 @@ const Register = () => {
                 </article>
             </section>
             <img src={line} className="" />
-
         </div>
     )
 }

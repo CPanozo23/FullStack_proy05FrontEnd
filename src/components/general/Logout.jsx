@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../context/user/userContext";
 import { useNavigate } from "react-router-dom"
+import { types } from "../../context/user/userReducer"
 
 const Logout = () => {
   const [, dispatch] = useContext(UserContext);
@@ -8,8 +9,9 @@ const Logout = () => {
 
   const handleLogout = () => {
     try{
+          
         dispatch({
-            type: "LOGOUT",
+          type: types.LOGOUT,
           });
           navigate(`/login`)
     }catch{

@@ -1,5 +1,5 @@
-import {useContext, useEffect} from 'react'
-import {UserContext} from "../context/user/userContext"
+import { useContext, useEffect } from 'react'
+import { UserContext } from "../context/user/userContext"
 import Customer_general from '../components/customer/Customer_general'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,21 +7,29 @@ const Dashboard_client = () => {
     const [user, ] = useContext(UserContext)
     const navigate = useNavigate()
     useEffect(() => {
-        if (user === null) {
-          navigate('/login');
+        try{
+            if (user.user === null) {
+                navigate('/login')
+              }else{
+                if (user.user.typeUser === "admin") {
+                    navigate('/dashboard-admin')
+                  }
+              }
+        }catch{
+            navigate('/login')
         }
       }, [user, navigate]);
-    return(
-        <section>
-            <h1>Dashboard_client</h1>
-            
-            {(user) ? (<div>
-                {JSON.stringify(user, null, 2)}
-                    <Customer_general />
-                </div>
-                
-                ) : (<div><p>Usuario no disponible</p></div>)}
 
+    return (
+        <section>
+            {(user) ? (
+            <div>
+                <h1>{user.name} {user.lastName} {user.typeUser}</h1>
+                
+                <Customer_general />
+                
+            </div>
+            ) : (<div><p>Usuario no disponible</p></div>)}
         </section>
     )
 }

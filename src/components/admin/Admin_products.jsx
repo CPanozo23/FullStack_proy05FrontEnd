@@ -2,91 +2,33 @@ import React, { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { ProductsContext } from "../../context/products/productsContext"
 import { types } from "../../context/products/productsReducer"
+import Admin_productsAdd from "./Admin_productsAdd"
+import Admin_productsUpdate from "./Admin_productsUpdate"
+import Admin_productsList from "./Admin_productsList"
 const Admin_products = () => {
-    const [products, dispatch] = useContext(ProductsContext);
-    const [selectedProduct, setSelectedProduct] = useState(null)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get("http://localhost:4000/products");
-                dispatch({
-                    type: types.setProductsState,
-                    payload: response.data.detail,
-                });
-            } catch (error) {
-                dispatch({
-                    type: types.setError,
-                    payload: error,
-                })
-            }
-        }
-
-        fetchData()
-    }, [dispatch])
-
-    const handleViewDetails = (productData) => {
-
+    const [showProductsAdd, setShowProductsAdd] = useState(false);
+    const handleAddButtonClick = () => {
+        !showProductsAdd ? setShowProductsAdd(true) :""
     }
-    const productsList = products.products.map(productData => {
-        return (
-            <article className="row m-1 border" key={productData._id}>
-                <div className="row col-11">
-                <div className="col-4">
-                    {productData.name} <br />
-                    {productData.author}<br />
-                    {productData.category}
-                </div>
-                <div className="col-4">
-                    Precio: ${productData.price} <br />
-                    Dcto: {productData.discount}% <br />
-                    Precio Venta:${productData.price}
-                </div>
-                <div className="col-4">
-                    Stock: ${productData.quantity} <br />
-                    Vendidos: {productData.sold} <br />
-                    Estado: Venta normal
-                </div>
-                <div className="col-12">
-                    {productData.description}
-                </div>
-                </div>
-                <div className="col-1">
-                    <img src={productData.imagen} alt="" className="w-100" />
-                    <button type="button" className="btn btn-primary m-2" onClick={() => handleViewDetails(productData)}>Editar</button>
-                    <button type="button" className="btn btn-primary m-2">Borrar</button>
-                </div>
-            </article>
-
-
-        )
-    })
+    const handleCloseAdd = () => {
+        setShowProductsAdd(false);
+    }
 
     return (
         <main>
-            <h1 className="text-cafe w-100 text-center">Libros</h1>
-            <section className="container">
-                {productsList}
-            </section>
-            {selectedProduct && (
-                <div className="overlay">
-                    {/*<button type="button" className="btn btn-link close-button" onClick={() => setSelectedProduct(null)} >❌</button>*/}
-                    <div className="details row">
-                        <div className="col-3">
-                            <img className="w-100" src={selectedProduct.imagen} />
-                        </div>
-                        <div className="col-9">
-                            <h2>{selectedProduct.name}</h2>
-                            <p>{selectedProduct.author}</p>
-                            <p>{selectedProduct.category}</p>
-                            <p>{selectedProduct.description}</p>
-                            <p>${selectedProduct.price} <button type="button" className="btn btn-primary m-2">Agregar</button></p>
-                        </div>
-                        <button type="button" className="btn btn-primary" onClick={() => setSelectedProduct(null)}>Cerrar</button>
-                    </div>
-                </div>
-            )}
+            <h1>Productos</h1>
+
+            {/*AGREGAR UN PRODUCTO*/}
+            <button type="button" className="btn btn-primary" onClick={handleAddButtonClick}>Agregar libro</button>
+            {showProductsAdd && 
+            <div className="overlay">
+                <Admin_productsAdd onClose={handleCloseAdd} />
+            </div>}
+
+            {/*VER LISTADO DE PRODUCTOS INMEDIATAMENTE, DEJAR EN EL FONDO AL SELECCIONAR MODIFICAR Y AGREGAR*/}
+            <Admin_productsList />
         </main>
-    );
+    )
 }
 export default Admin_products;
