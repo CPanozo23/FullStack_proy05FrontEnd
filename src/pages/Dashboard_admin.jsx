@@ -10,10 +10,10 @@ const Dashboard_admin = () => {
     const navigate = useNavigate()
     useEffect(() => {
         try{
-            if (user === null) {
+            if (user.user === null) {
                 navigate('/login')
               }else{
-                if (user.typeUser === "client") {
+                if (user.user.typeUser === "client") {
                     navigate('/dashboard-client')
                   }
               }

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const Dashboard_client = () => {
     const [user, ] = useContext(UserContext)
     const navigate = useNavigate()
+    console.log(user.user)
     useEffect(() => {
         try{
             if (user.user === null) {
@@ -24,7 +25,7 @@ const Dashboard_client = () => {
         <section>
             {(user) ? (
             <div>
-                <h1>{user.name} {user.lastName} {user.typeUser}</h1>
+                <h1>{user.user.name} {user.user.lastName} {user.user.typeUser}</h1>
                 
                 <Customer_general />
                 

@@ -5,6 +5,7 @@ import line from '/linea.svg'
 import { types } from '../context/user/userReducer'
 import axios from "axios"
 import { NavLink, useNavigate } from "react-router-dom"
+import jwt from "jwt-decode"
 
 
 const Register = () => {
@@ -48,9 +49,11 @@ const Register = () => {
                     'Content-Type': 'application/json'
                 }
             })
+            const tokenDecodificado = jwt(data.token)
+
             dispatch({
                 type: types.setUserState,
-                payload: data,
+                payload: tokenDecodificado,
             })
             window.alert("Usuario registrado")
             navigate('/login')

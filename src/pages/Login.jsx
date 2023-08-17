@@ -6,6 +6,8 @@ import { UserContext } from '../context/user/userContext'
 import { types } from "../context/user/userReducer"
 import axios from "axios"
 
+import jwt from "jwt-decode"
+
 const Login = () => {
 
     const [, dispatch] = useContext(UserContext)
@@ -33,13 +35,18 @@ const Login = () => {
                 headers:{
                     'Content-Type': 'application/json'
                 }
+
             })
+            const tokenDecodificado = jwt(data.token)
             dispatch({
                 type: types.setUserState,
-                payload: data,
+                payload: tokenDecodificado,
             })
             window.alert('Usuario logueado')
-            navigate(`/dashboard-${data.typeUser}`)
+            console.log('tokenDecodificado')
+            console.log(tokenDecodificado)
+            navigate(`/dashboard-${tokenDecodificado.typeUser}`)
+            //navigate("/dashboard-client")
         } catch (error) {
             window.alert('Error login')
 
