@@ -1,8 +1,8 @@
 const Reservation = () => {
     return(
-        <main className='mt-2'>
+        <section>
             Reservation
-        </main>
+        </section>
     )
 }
 

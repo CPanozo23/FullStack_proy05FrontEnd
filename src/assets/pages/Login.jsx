@@ -1,25 +1,64 @@
+import { useContext, useState } from 'react'
+import Bestseller from '../components/general/Bestseller'
 import line from '/linea.svg'
 import { NavLink, useNavigate } from "react-router-dom"
+import { UserContext } from '../context/user/userContext'
+import { types } from "../context/user/userReducer"
+import axios from "axios"
+
 import jwt from "jwt-decode"
 
 const Login = () => {
+
+    const [, dispatch] = useContext(UserContext)
+
+    const navigate = useNavigate()
 
     const initialUser = {
         email: "",
         password: ""
     }
+
     const [user, setUser] = useState(initialUser)
+
     const handleChange = (e) => {
         setUser({
             ...user,
             [e.target.name]: e.target.value
         })
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
+        try {
+            const { data } = await axios.post('http://localhost:4000/users/login', user, {
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+
+            })
+            const tokenDecodificado = jwt(data.token)
+            dispatch({
+                type: types.setUserState,
+                payload: tokenDecodificado,
+            })
+            window.alert('Usuario logueado')
+            console.log('tokenDecodificado')
+            console.log(tokenDecodificado)
+            navigate(`/dashboard-${tokenDecodificado.typeUser}`)
+            //navigate("/dashboard-client")
+        } catch (error) {
+            window.alert('Error login')
+
+            dispatch({
+                type:types.setError,
+                payload: error,
+            })
+        }
+
     }
     return (
-        <main className='mt-2'>
+        <div className='mt-2'>
             <section className="container ">
                 <article className='row justify-content-center'>
                     <div className='bg-light col-12 col-md-4 d-flex flex-column border rounded '>
@@ -34,7 +73,7 @@ const Login = () => {
                             </div>
                             <div className="input-group mb-2">
                                 <label htmlFor="password" className="input-group-text col-12 col-lg-4 col-md-5 col-sm-6 bg-verdeclaro">Contraseña:</label>
-                                <input type="password" className="form-control" id="password" name="password" placeholder="Ingrese su contraseña" aria-label="password" required onChange={handleChange} />
+                                <input type="password" className="form-control" id="password" name="password" placeholder="Ingrese su contraseña" aria-label="password" required onChange={handleChange}  />
                             </div>
                             <button type="submit" className="btn btn-primary">Ingresar</button>
                         </form>
@@ -42,11 +81,13 @@ const Login = () => {
                     </div>
 
                 </article>
-
+                
             </section>
-
+            
             <img src={line} className="" />
-        </main>
+            <Bestseller />
+        </div>
+        
     )
 }
 
