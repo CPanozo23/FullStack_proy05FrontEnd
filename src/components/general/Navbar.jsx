@@ -2,8 +2,11 @@ import { NavLink } from "react-router-dom"
 import { useContext } from "react"
 import { UserContext } from "../../context/user/userContext"
 import Logout from "./Logout"
+import LoginBtn from "../buttons/LoginBtn"
+import LogoutBtn from "../buttons/LogoutBtn"
 const Navbar = () => {
 
+  const [state, ] = useContext(UserContext)
     return(
         <nav id="navbar-general" className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
@@ -29,6 +32,10 @@ const Navbar = () => {
         </li>      
       </ul>
       <div>
+      
+      {(state?.user) 
+                ? <LogoutBtn />
+                : <LoginBtn />  }
       </div>
     </div>
   </div>

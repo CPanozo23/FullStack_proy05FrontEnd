@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user/userContext'
 import { useContext, useEffect } from 'react'
 
-const Dashboard_client = () => {
+const Dashboard_admin = () => {
     const navigate = useNavigate()
 
 
@@ -26,4 +26,4 @@ const Dashboard_client = () => {
         </main>
     )
 }
-export default Dashboard_client
+export default Dashboard_admin

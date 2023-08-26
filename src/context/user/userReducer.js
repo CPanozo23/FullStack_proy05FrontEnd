@@ -1,9 +1,9 @@
 export const types = {
     setUserState: '[USER] Set User State',
-    setUsersState: '[USERS] Set Users State',
+    //setUsersState: '[USERS] Set Users State',
     setError: '[USER] Set Error',
     LOGOUT: "[USER] Logout",
-  };
+  }
   
   const userReducer = (state, action = {}) => {
     switch (action.type) {
@@ -12,11 +12,11 @@ export const types = {
           ...state,
           user: action.payload
         }
-      case types.setUsersState: 
+      /*case types.setUsersState: 
         return {
           ...state,
           users: action.payload,
-        };
+        }*/
       case types.setError:
         return {
           ...state,
@@ -27,11 +27,11 @@ export const types = {
         return {
           ...state,
           user: null,
-        };
+        }
       default:
         return state;
     }
-  };
+  }
   
   export default userReducer;
   

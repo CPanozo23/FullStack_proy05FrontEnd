@@ -9,6 +9,7 @@ const Slide  = () =>{
             </div>
             <div className="col-4">
                 <p className="fs-1">¿Tienes conflictos y necesitas ayuda para resolverlos?</p>
+                <p className="fs-2">¿Un familiar o amigo tuyo requiere contención?</p>
             </div>
         </div>
             <img src={line} className="" />

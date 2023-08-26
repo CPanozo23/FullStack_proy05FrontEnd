@@ -3,16 +3,18 @@ import { UserContext } from "../../context/user/userContext";
 import { useNavigate } from "react-router-dom"
 import { types } from "../../context/user/userReducer"
 
-const Logout = () => {
+const LogoutBtn = () => {
   const [, dispatch] = useContext(UserContext);
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    try{       
+    try{      
         dispatch({
           type: types.LOGOUT,
           })
-          navigate(`/login`)
+        window.alert('sesión cerrada')
+        sessionStorage.removeItem('jwtToken')
+          navigate(`/`)
     }catch{
         window.alert('Error cerrar sesión')
 
@@ -20,7 +22,6 @@ const Logout = () => {
             type:types.setError,
             payload: error,
         })
-        sessionStorage.removeItem('jwtToken')
     }
   }
 
@@ -29,4 +30,4 @@ const Logout = () => {
   )
 }
 
-export default Logout
+export default LogoutBtn

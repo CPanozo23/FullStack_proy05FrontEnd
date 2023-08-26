@@ -17,10 +17,8 @@ const MainRoutes = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/attention' element={<Attention />} />
             <Route path='/register' element={<Register />} />
-            
-            
-                <Route path='/reservation' element={<Reservation />} />
-                <Route path='/dashboard-client' element={<Dashboard_client />} />
+            <Route path='/reservation' element={<Reservation />} />
+            <Route path='/dashboard-client' element={<Dashboard_client />} />
             <Route path='/*' element={<h1>Not Found</h1>} />
         </Routes>
         //Con el type de usuario proteger
