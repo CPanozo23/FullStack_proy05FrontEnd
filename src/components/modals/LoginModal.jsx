@@ -43,6 +43,8 @@ const LoginModal = ({ isOpen, onClose }) => {
       const tokenDecodificado = jwt(data.token)
       console.log("decodificado: ", tokenDecodificado)
 
+      sessionStorage.setItem('jwtToken', data.token)
+
       dispatch({
         type: types.setUserState,
         payload: tokenDecodificado,

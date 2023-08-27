@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user/userContext'
 import { useContext, useEffect } from 'react'
 
@@ -9,14 +9,11 @@ const Dashboard_admin = () => {
     const [state, ] = useContext(UserContext)
     console.log(state)
 
-    /*
     if (state === null) {
-     return (
- 
-       <Navigate to="/"/>
-       )
-    }
-    */
+        return (<Navigate to="/"/>)
+       }else if(state.user.typeUser==='client'){
+           return (<Navigate to="/dashboard-client"/>)
+       }
     
     return (
         <main>

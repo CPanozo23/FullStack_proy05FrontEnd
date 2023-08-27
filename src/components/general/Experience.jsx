@@ -8,7 +8,7 @@ const Experience = () => {
                 {experience_info.map((exps, index) => (
                     <article>
                         <div className='row' key={index}>
-                            <div className='col-1'>
+                            <div key={index} className='col-1'>
                                 <img src={exps.img} className='profileImg' />
                             </div>
                             <div className='col'>

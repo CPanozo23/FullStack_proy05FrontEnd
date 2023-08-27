@@ -1,12 +1,24 @@
 import { NavLink } from "react-router-dom"
-import { useContext } from "react"
+import { useContext, useEffect  } from "react"
 import { UserContext } from "../../context/user/userContext"
 import Logout from "./Logout"
 import LoginBtn from "../buttons/LoginBtn"
 import LogoutBtn from "../buttons/LogoutBtn"
-const Navbar = () => {
+import jwt from "jwt-decode"
+import { types } from '../../context/user/userReducer'
 
-  const [state, ] = useContext(UserContext)
+const Navbar = () => {
+  const [state,dispatch] = useContext(UserContext)
+  useEffect(() => {
+    const jwtToken = sessionStorage.getItem('jwtToken');
+        if (jwtToken && !state) {
+          const tokenDecodificado = jwt(jwtToken);
+          dispatch({
+            type: types.setUserState,
+            payload: tokenDecodificado,
+          })
+        }
+  })
     return(
         <nav id="navbar-general" className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
@@ -27,9 +39,39 @@ const Navbar = () => {
         <li className="nav-item dropdown">
         <NavLink className="nav-link" aria-current="page" to="/attention">Atención psicológica</NavLink>
         </li>
-        <li className="nav-item">
-        <NavLink className="nav-link" aria-current="page" to="/reservation">Reservas</NavLink>
-        </li>      
+        
+        { (state?.user) ? 
+                <li className="nav-item dropdown">
+                <NavLink
+                    className="nav-link dropdown-toggle"
+                    to="/dashboard-client" // Redirige aquí
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ><span className="fw-bold text-primary">
+                    {state.user.name} {state.user.lastName}</span>
+                  </NavLink>
+                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <NavLink className="dropdown-item" activeclassname="active" to={`/dashboard-${state.user.typeUser}`}>
+                    Dashboard
+                    </NavLink>
+                    <NavLink className="dropdown-item" activeclassname="active" to="/dropdown/another-action">
+                      Another Action
+                    </NavLink>
+                  </div>
+                </li>
+                : '' }
+
+        
+        
+        {(state?.user) 
+                ? <li className="nav-item">
+                <NavLink className="nav-link" aria-current="page" to={`/dashboard-${state.user.typeUser}`}><span className="fw-bold text-primary">Dashboard</span></NavLink>
+                </li>
+                : ''  }
+
       </ul>
       <div>
       

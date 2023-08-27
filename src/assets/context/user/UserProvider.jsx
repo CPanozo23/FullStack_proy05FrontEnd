@@ -4,19 +4,27 @@
 import React from "react"
 import { UserContext } from "./userContext"
 import { useReducer } from "react"
-import userReducer from './userReducer'
-export const UserProvider = ({children}) => {
-    
-    const [ user, dispatch] = useReducer(userReducer, null)
-    //mezcla
-    //const [user, dispatch] = useReducer(userReducer, { users: [], error: null });
-    //para traer todo
-    //const [users, dispatch] = useReducer(userReducer, null);
+import userReducer, { types } from './userReducer'
+import jwt from "jwt-decode"
 
-    return (
-        
-        <UserContext.Provider value={[user,dispatch]}>
-            {children}
+export const UserProvider = ({children}) => { 
+    const [ user, dispatch] = useReducer(userReducer, null)
+    window.alert("asd")
+    useEffect(() => {
+        const jwtToken = sessionStorage.getItem('jwtToken');
+        if (jwtToken && !user) {
+          const tokenDecodificado = jwt(jwtToken);
+          dispatch({
+            type: types.setUserState,
+            payload: tokenDecodificado,
+          });
+        }
+      }, [user]);
+    
+      return (
+        <UserContext.Provider value={[user, dispatch]}>
+          {children}
         </UserContext.Provider>
-    )
+      )
+    
 }

@@ -14,6 +14,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
   const [isFetching, setIsFetching]=useState(false)
   const [, dispatch] = useContext(UserContext)
   const navigate = useNavigate()
+    const jwtToken = sessionStorage.getItem('jwtToken');
 
   const initialUser = {
     run: "", name: "", lastName: "", birthday: "", email: "", password: "", passwordVerify: ""
@@ -37,13 +38,14 @@ const RegisterModal = ({ isOpen, onClose }) => {
       if (formUser.password === formUser.passwordVerify) {
         console.log("Crear usuario...")
         try {
+          //mandar form
           const { data } = await axios.post('http://localhost:4000/users/signup', formUser, {
             headers: {
               "Context-Type": "application/json",
             },
           })
 
-          sessionStorage.setItem('jwtToken', data.token);
+          sessionStorage.setItem('jwtToken', data.token)
           const tokenDecodificado=jwt(data.token)
           console.log(tokenDecodificado)
           dispatch({
