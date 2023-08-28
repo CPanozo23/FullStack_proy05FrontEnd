@@ -23,7 +23,7 @@ const Navbar = () => {
         <nav id="navbar-general" className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
     <a className="navbar-brand" href="#">
-    <img src="logo_cpd.svg" className="w-100" />
+    <img src="/logo_cpd.svg" className="w-100" />
     </a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -37,7 +37,7 @@ const Navbar = () => {
         <NavLink className="nav-link" to="/studiesExperience">Formación y experiencia</NavLink>
         </li>
         <li className="nav-item dropdown">
-        <NavLink className="nav-link" aria-current="page" to="/attention">Atención psicológica</NavLink>
+        <NavLink className="nav-link" aria-current="page" to="/attentions">Atención psicológica</NavLink>
         </li>
         
         { (state?.user) ? 

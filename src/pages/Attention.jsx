@@ -1,3 +1,4 @@
+import Consultations from '../components/general/Consultations';
 import Reservation_slide from '../components/general/Reservation_slide';
 import reserved_online from '/reserva.svg'
 const Attention = () => {
@@ -36,6 +37,7 @@ const Attention = () => {
             </article>
             
             </section>
+            <Consultations />
             <Reservation_slide />
         </main>
     );

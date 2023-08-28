@@ -7,6 +7,7 @@ import Reservation from "../pages/Reservation"
 import Attention from "../pages/Attention"
 import Dashboard_client from "../pages/Dashboard_client"
 import Dashboard_admin from "../pages/Dashboard_admin"
+import AttentionAdd from "../pages/AttentionAdd"
 
 
 const MainRoutes = () => {
@@ -18,9 +19,11 @@ const jwtToken = sessionStorage.getItem('jwtToken');
             <Route path='/' element={<Home />} />
             <Route path='/studiesExperience' element={<StudiesExperience />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/attention' element={<Attention />} />
+            <Route path='/attentions' element={<Attention />} />
             <Route path='/register' element={<Register />} />
             <Route path='/reservation' element={<Reservation />} />
+            <Route path='/attention/:id' element={<AttentionAdd />} />
+
             <Route path='/*' element={<h1>Not Found</h1>} />
 
             

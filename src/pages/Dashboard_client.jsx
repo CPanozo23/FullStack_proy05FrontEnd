@@ -6,13 +6,15 @@ import axios from 'axios';
 import jwt from "jwt-decode";
 import UpEmailBtn from '../components/buttons_client/UpEmailBtn';
 import UpPWBtn from '../components/buttons_client/UpPWBtn';
+import AddPatientBtn from '../components/buttons_client/AddPatientBtn';
+import {dateFormatDMY } from '../helpers/dateFormat';
 
 const Dashboard_client = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
     const [dataLoaded, setDataLoaded] = useState(false);
 
-    const [state, ] = useContext(UserContext);
+    const [state,] = useContext(UserContext);
     const jwtToken = sessionStorage.getItem('jwtToken');
 
     if (!jwtToken) {
@@ -28,58 +30,77 @@ const Dashboard_client = () => {
             try {
                 const response = await axios.get(url, {
                     headers: {
+          'Content-Type': 'application/json',
                         Authorization: `Bearer ${jwtToken}`,
                     },
                 });
 
                 setUserData(response.data.detail);
                 console.log(response.data.detail)
-                setDataLoaded(true); // Indica que los datos se han cargado
+                if(typeof(userData?.patients)==='undefined'){
+                    console.log("no hay")
+                }
+                setDataLoaded(true)
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
-        };
+        }
 
-        fetchUserData();
-    }, [url, jwtToken]);
-function dateFormat(dateF){
-    const date = new Date(dateF.toLocaleString("en-US", { timeZone: "America/Santiago" }))
-    const day = date.getDate().toString().padStart(2, '0');
-const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Sumamos 1 porque los meses en JavaScript van de 0 a 11
-const year = date.getFullYear();
+        fetchUserData()
+    }, [url, jwtToken])
+    /*
+    function dateFormat(dateF) {
+        const date = new Date(dateF.toLocaleString("en-US", { timeZone: "America/Santiago" }))
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Sumamos 1 porque los meses en JavaScript van de 0 a 11
+        const year = date.getFullYear();
 
-const formattedDate = `${day}-${month}-${year}`;
+        const formattedDate = `${day}-${month}-${year}`;
 
-console.log(formattedDate);
+        console.log(formattedDate);
 
-return formattedDate
-}
+        return formattedDate
+    }*/
+
+    //formattedDate=dateFormat(dateF)
     return (
         <main>
             <section className='container'>
                 {state?.user ? (
                     <>
-                        <h1>Bienvenid@ {state.user.name} {state.user.lastName}</h1>
-                        {dataLoaded ? (
-                            <article className='border row'>
+                        <article className='row mt-2'>
+                            {dataLoaded ? (
+                                <>
+                                    <div className='py-2 col align-items-center bg-warning'>
+                                        <h1 className='m-0 align-items-center bg-primary'>Bienvenid@ {state.user.name} {state.user.lastName}</h1>
+                                    </div>
+                                    <div className='col row align-items-center text-end p-0 m-0'>
+                                        <div className='col fw-bold p-0 m-0 text-end'>{userData?.run}</div>
+                                        <div className='col fw-bold p-0 m-0'>🗓️ {dateFormatDMY(userData?.birthday)}</div>
+                                        <div className='col fw-bold p-0 m-0'>✉️ {userData?.email}</div>
+                                        <div className='p-0 text-end'>
+                                        <AddPatientBtn id={userData?._id}/>
+                                        <UpPWBtn id={userData?._id} />
+                                        <UpEmailBtn id={userData?._id} />
+                                    </div>
+                                    </div>
+                                    <hr />
+                                    <p>Pacientes</p>
+                                    <p>{(userData.patients===null)? 'no hay' : 'si hay'} ...</p>
+                                </>
+                            ) : (
+                                <p>Cargando datos...</p>
+                            )}
                             
-                                <div className='col'>RUN: {userData?.run}</div>
-                                <div className='col'>Email: {userData?.email}</div>
-                                <div className='col'>Fecha de nacimiento: {dateFormat(userData?.birthday)}</div>
-                                <div className='col'>
-                                    <UpEmailBtn id={userData?._id}/> pasar el id
-                                    <UpPWBtn id={userData?._id}/> pasar el id
-                                </div>
-                            </article>
-                        ) : (
-                            <p>Cargando datos...</p>
-                        )}
-                        <p>Agregar pacientes</p>
+                            
+                        </article>
+                        
+
                         <p>Modificar info pacientes</p>
                         <p>listado de pacientes</p>
                         <p>Agregar hora</p>
                         <p>Ver listado de horas</p>
-                        
+
                     </>
                 ) : null}
             </section>

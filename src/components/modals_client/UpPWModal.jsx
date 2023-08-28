@@ -7,7 +7,7 @@ import RegisterBtn from '../buttons/RegisterBtn'
 import { types } from '../../context/user/userReducer';
 import jwt from "jwt-decode"
 
-Modal.setAppElement('#root');
+Modal.setAppElement('#root')
 
 const UpPWModal = ({ isOpen, onClose, id }) => {
   //window.alert("y a lo recibii:"+ id)
