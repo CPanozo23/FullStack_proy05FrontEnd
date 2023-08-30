@@ -21,7 +21,7 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
   ]
 
   const initialPatient = {
-    relation: '', RUN: '', name: '', lastName: '', birthday: '',
+    relationship: '', RUN: '', name: '', lastName: '', birthday: '',
     email: '', phone: '', street: '', number_st: '',
     department: '', city: '', region: ''
   }
@@ -77,6 +77,7 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
 
     setFormPatient({
       ...formPatient,
+      relationship:relation,
       RUN: data.detail.run,
       name: data.detail.name,
       lastName: data.detail.lastName,
@@ -89,7 +90,7 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
     setDisabledInputs([]);
     setFormPatient({
       ...formPatient,
-      relationship:'',
+      relationship:relation,
       RUN: '',
       name: '',
       lastName: '',
@@ -102,7 +103,7 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
 
   const handleChange = (e) => {
     setFormPatient({
-      ...formPatient, type: 'email',
+      ...formPatient,
       [e.target.name]: e.target.value
     })
     console.log(formPatient)
@@ -110,11 +111,27 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('jj')
-    //setIsFetching(true)
+    setIsFetching(true)
     console.log(formPatient)
+    window.alert(formPatient.relationship)
     
+    try {
+      const { data } = await axios.post(`http://localhost:4000/patients/register/${id}`, formPatient, {
+            headers: {
+              "Context-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+            },
+          })
 
+          window.alert("Paciente agregado")
+        onClose()
+
+    } catch (error) {
+      window.alert(error)
+    }finally{
+    setIsFetching(false)
+
+    }
   }
 
 
@@ -125,8 +142,8 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
 
       <form className="container p-1 p-sm-3"name='formPatient' onSubmit={handleSubmit}>
       <div className="input-group mb-2">
-          <label htmlFor="relation" className="input-group-text col-12 col-lg-4 col-md-5 col-sm-6 bg-verdeclaro">Relación:</label>
-      <select className="form-control" onChange={handleRelationChange} name='relation' id='relation' >
+          <label htmlFor="relationship" className="input-group-text col-12 col-lg-4 col-md-5 col-sm-6 bg-verdeclaro">Relación:</label>
+      <select className="form-control" onChange={handleRelationChange} name='relationship' id='relationship' >
             <option value="">¿Qué es el paciente de usted?</option>
             {relationship.map((rel, index) => (<option key={index}>{rel}</option>))}
           </select>

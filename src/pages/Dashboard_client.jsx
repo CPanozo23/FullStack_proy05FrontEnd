@@ -7,16 +7,20 @@ import jwt from "jwt-decode";
 import UpEmailBtn from '../components/buttons_client/UpEmailBtn';
 import UpPWBtn from '../components/buttons_client/UpPWBtn';
 import AddPatientBtn from '../components/buttons_client/AddPatientBtn';
-import {dateFormatDMY } from '../helpers/dateFormat';
+import { dateFormatDMY } from '../helpers/dateFormat';
+import { getReservationInfo } from '../helpers/reservation_date';
 
 const Dashboard_client = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
+    const [patientsData, setPatientsData] = useState(null);
+    const [patientsRelation, setPatientsRelation] = useState(null);
+    const [reservationData, setReservationData] = useState(null);
     const [dataLoaded, setDataLoaded] = useState(false);
 
     const [state,] = useContext(UserContext);
     const jwtToken = sessionStorage.getItem('jwtToken');
-
+    const now = new Date()
     if (!jwtToken) {
         return <Navigate to="/" />;
     }
@@ -28,18 +32,26 @@ const Dashboard_client = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(url, {
+                const resp = await axios.get(url, {
                     headers: {
-          'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                         Authorization: `Bearer ${jwtToken}`,
                     },
-                });
+                })
 
-                setUserData(response.data.detail);
-                console.log(response.data.detail)
-                if(typeof(userData?.patients)==='undefined'){
-                    console.log("no hay")
-                }
+                setUserData(resp.data.detail)
+                setPatientsData(resp.data.patients)
+                setReservationData(resp.data.reservationsList)
+const listPatients = await resp.data.detail.patients.map((patient) => ({
+    relationship: patient.relationship,
+    patientData: resp.data.patients.find((patientSearch) => patientSearch._id === patient._id),
+
+}))
+
+resp.data.reservationsList.forEach(item => {
+  })
+                setPatientsRelation(listPatients)
+
                 setDataLoaded(true)
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -48,59 +60,87 @@ const Dashboard_client = () => {
 
         fetchUserData()
     }, [url, jwtToken])
-    /*
-    function dateFormat(dateF) {
-        const date = new Date(dateF.toLocaleString("en-US", { timeZone: "America/Santiago" }))
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Sumamos 1 porque los meses en JavaScript van de 0 a 11
-        const year = date.getFullYear();
 
-        const formattedDate = `${day}-${month}-${year}`;
-
-        console.log(formattedDate);
-
-        return formattedDate
-    }*/
-
-    //formattedDate=dateFormat(dateF)
     return (
         <main>
             <section className='container'>
                 {state?.user ? (
                     <>
-                        <article className='row mt-2'>
-                            {dataLoaded ? (
-                                <>
-                                    <div className='py-2 col align-items-center bg-warning'>
-                                        <h1 className='m-0 align-items-center bg-primary'>Bienvenid@ {state.user.name} {state.user.lastName}</h1>
-                                    </div>
-                                    <div className='col row align-items-center text-end p-0 m-0'>
-                                        <div className='col fw-bold p-0 m-0 text-end'>{userData?.run}</div>
-                                        <div className='col fw-bold p-0 m-0'>🗓️ {dateFormatDMY(userData?.birthday)}</div>
-                                        <div className='col fw-bold p-0 m-0'>✉️ {userData?.email}</div>
-                                        <div className='p-0 text-end'>
-                                        <AddPatientBtn id={userData?._id}/>
+                        {dataLoaded ? (
+                            <article className='row'>
+                                <div className='py-2 col align-items-center bg-warning'>
+                                    <h1 className='m-0 align-items-center bg-primary'>Bienvenid@ {state.user.name} {state.user.lastName}</h1>
+                                </div>
+                                <div className='col row align-items-center text-end p-0 m-0'>
+                                    <div className='col fw-bold p-0 m-0 text-end'>{userData?.run}</div>
+                                    <div className='col fw-bold p-0 m-0'>🗓️ {dateFormatDMY(userData?.birthday)}</div>
+                                    <div className='col fw-bold p-0 m-0'>✉️ {userData?.email}</div>
+                                    <div className='p-0 text-end'>
+                                        <AddPatientBtn id={userData?._id} />
                                         <UpPWBtn id={userData?._id} />
                                         <UpEmailBtn id={userData?._id} />
                                     </div>
+                                </div>
+                            </article>
+                        ) : (<p>Cargando datos de usuario...</p>)}
+                        <hr />
+                        {dataLoaded ? (
+                            <article>
+                                <p className='fs-3'>Pacientes</p>
+                                {patientsRelation?.map((patientRelation, index) => (
+                                    <div className='row' key={index}>
+                                        <div className='col-2 border'>{patientRelation.relationship}</div>
+
+                                        {patientRelation.patientData && (
+                                            <>
+                                                <div
+                                                 className='col-2 border'>   {patientRelation.patientData.name} {patientRelation.patientData.lastName}
+                                                </div>
+                                               
+                                                {reservationData?.map(item => {
+  if (item.id_patient === patientRelation.patientData._id) {
+    
+    const {reservationsFuture, totalReservationsPassed } = getReservationInfo(item.reservations)
+
+    return (
+      <div className='col-6 border d-flex' key={item.id_patient}>
+        <div className='col-4 border'>
+          Reservas pasadas: {totalReservationsPassed}
+        </div>
+        <div className='col-4 border'>
+          Próxima:
+          {reservationsFuture.map((reservation, index) => (
+            <span key={index}>{reservation.hour.startTime}</span>
+          ))}
+        </div>
+
+        <div className='col border'>
+      <button className='btn btn-primary m-1' id={item.id_patient}>Ver historial</button>
+  </div>
+ 
+  </div>
+    )
+  } else {
+    return null
+  }
+})}
+
+  
+
+                                            
+                                                <div className='col border'>
+                                                    
+                                                    <button className='btn btn-primary m-1' id={patientRelation.patientData.id}>Actualizar información</button>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
-                                    <hr />
-                                    <p>Pacientes</p>
-                                    <p>{(userData.patients===null)? 'no hay' : 'si hay'} ...</p>
-                                </>
-                            ) : (
-                                <p>Cargando datos...</p>
-                            )}
-                            
-                            
-                        </article>
-                        
+                                ))}
 
-                        <p>Modificar info pacientes</p>
-                        <p>listado de pacientes</p>
-                        <p>Agregar hora</p>
-                        <p>Ver listado de horas</p>
-
+                            </article>
+                        ) : (
+                            <p>Cargando datos de pacientes...</p>
+                        )}
                     </>
                 ) : null}
             </section>
