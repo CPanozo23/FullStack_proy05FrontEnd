@@ -39,9 +39,9 @@ BackEnd: [https://github.com/CPanozo23/FullStack_proy05BackEnd](https://github.c
 
 ## 6. Wireframes
 
-<img src='https://github.com/CPanozo23/FullStack_proy05FrontEnd/blob/master/wireframe01.PNG>
+<img src='https://github.com/CPanozo23/FullStack_proy05FrontEnd/blob/master/wireframe01.PNG'>
 
-<img src='https://github.com/CPanozo23/FullStack_proy05FrontEnd/blob/master/wireframe02.PNG>
+<img src='https://github.com/CPanozo23/FullStack_proy05FrontEnd/blob/master/wireframe02.PNG'>
 
 
 
