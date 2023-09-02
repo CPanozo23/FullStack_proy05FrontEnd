@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import RegisterBtn from '../buttons/RegisterBtn'
 import { types } from '../../context/user/userReducer';
 import jwt from "jwt-decode"
-import { urlGeneral } from '../helpers/connect_db'
+import { urlGeneral } from '../../helpers/connect_db'
 
 Modal.setAppElement('#root')
 
