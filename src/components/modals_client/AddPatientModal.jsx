@@ -8,7 +8,6 @@ import { inputForm_patient } from '../../helpers/inputForm_patient'
 import {dateFormatYMD } from '../../helpers/dateFormat'
 import { validateRun } from '../../helpers/validateRun'
 import moment from 'moment'
-import { urlGeneral } from '../helpers/connect_db'
 
 Modal.setAppElement('#root')
 
@@ -59,7 +58,7 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
     const relation = e.target.value
     handleChange(e)
     if(relation === 'Paciente') {
-    const { data } = await axios.get(`${urlGeneral}/users/${id}`, {
+    const { data } = await axios.get(`https://caro-back.onrender.com/users/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,
@@ -145,7 +144,7 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
         if (isRunRegistered) {
           Swal.fire({ icon: 'error', title: 'Ya existe', text:"Ya tienes un paciente registrado con mismo RUN", timer: 30000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
         } else {
-          const { data } = await axios.post(`${urlGeneral}/patients/register/${id}`, formPatient, {
+          const { data } = await axios.post(`https://caro-back.onrender.com/patients/register/${id}`, formPatient, {
         headers: {
           "Context-Type": "application/json",
       Authorization: `Bearer ${jwtToken}`,
