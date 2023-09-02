@@ -36,7 +36,7 @@ const UpEmailModal = ({ isOpen, onClose, id }) => {
 
     try {
       if(formEmail.email === formEmail.emailVerify){
-        const { data } = await axios.put(`${urlGeneral}/users/${id}`, formEmail, {
+        const { data } = await axios.put(`${urlGeneral}users/${id}`, formEmail, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,
