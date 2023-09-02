@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import line from '/linea.svg'
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
+import { urlGeneral } from '../../helpers/connect_db';
 const Consultations = () => {
     const [consultationsData, setConsultationsData] = useState(null);
 
-    const url = `http://localhost:4000/consultations/`;
+    const url = `https://caro-back.onrender.com/consultations/`;
 
     useEffect(() => {
         const fetchConsultationsData = async () => {
@@ -26,7 +27,7 @@ const Consultations = () => {
         fetchConsultationsData()
     }, [url])
 
-    const backgroundColors = ['bg-verdeclaro', 'bg-celeste', 'bg-rosado']; // Colores de fondo predefinidos
+    const backgroundColors = ['bg-verdeclaro', 'bg-celeste', 'bg-rosado']
     return (
         <>
             <main className="">

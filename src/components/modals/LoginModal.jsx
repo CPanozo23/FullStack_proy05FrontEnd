@@ -53,19 +53,20 @@ const LoginModal = ({ isOpen, onClose }) => {
         timer: 2000,
         confirmButtonColor: '#1E90FF',
         timerProgressBar: true,
-        //showCloseButton: true,showCancelButton: true, focusConfirm: false,
     })
-      
-      //navigate(`/dashboard-client`)      
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error '+error.response.status,
-        text: 'Ingrese de nuevo usuario y contraseña',
-        timer: 3000,
-        timerProgressBar: true,
-        confirmButtonColor: '#1E90FF',
-    })
+      if (error.response && error.response.status) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error ' + error.response.status,
+          text: 'Ingrese de nuevo usuario y contraseña',
+          timer: 3000,
+          timerProgressBar: true,
+          confirmButtonColor: '#1E90FF',
+        })
+      } else {
+        console.error('Error de solicitud:', error);
+      }
       dispatch({
         type: types.setError,
         payload: error,
