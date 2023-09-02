@@ -98,7 +98,7 @@ const Carshop = () => {
         <p>El carrito está vacío</p>
       ) : (
         <section>
-          <form>
+          <form className='50vh'>
             {reservationState.map((reserva, index) => (
               <article key={index} className='border row'>
                 <div className='col-1 border'>N° {index + 1}</div>
