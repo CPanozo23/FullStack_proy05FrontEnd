@@ -36,7 +36,7 @@ const UpPWModal = ({ isOpen, onClose, id }) => {
 
     try {
       if(formPW.password === formPW.passwordVerify){
-        const { data } = await axios.put(`${urlGeneral}/users/${id}`, formPW, {
+        const { data } = await axios.put(`https://caro-back.onrender.com/users/${id}`, formPW, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,
@@ -117,7 +117,7 @@ const UpPWModal = ({ isOpen, onClose, id }) => {
           {isFetching ? 'Cargando...' : 'Actualizar'}
         </button>
       </form>
-      Actualizar:¿mensaje de está seguro? confirmar y actualizar. Actualizar token
+      
 
 
       <button type="button" onClick={onClose} className="btn btn-primary">
