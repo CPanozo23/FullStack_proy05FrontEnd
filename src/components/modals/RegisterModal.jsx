@@ -6,16 +6,12 @@ import { UserContext } from '../../context/user/userContext'
 import { types } from '../../context/user/userReducer'
 import axios from "axios"
 import jwt from "jwt-decode"
-import inputForm_user from '../../helpers/inputForm_user'
 import { validateRun } from '../../helpers/validateRun'
 import { handlePasswordChange } from '../../helpers/validatePassword'
-//VERIFICAR SI RUN ES RUN
-//VERIFICAR SI EXISTE UN USUARIO CON MISMO RUN Y/O EMAIL 
-
+import { urlGeneral } from '../../helpers/connect_db'
+import inputForm_user from '../../helpers/inputForm_user'
 Modal.setAppElement('#root')
 const RegisterModal = ({ isOpen, onClose }) => {
-
-
   const [run, setRun] = useState('')
   const [runValid, setRunValid] = useState(false)
 
@@ -86,7 +82,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
               Swal.fire({ icon: 'error', title: 'Debe cumplir con lo solicitado en clave', timer: 5000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
             } else {
               
-              const { data } = await axios.post('http://localhost:4000/users/signup', formUser, {
+              const { data } = await axios.post(`${urlGeneral}users/signup`, formUser, {
                 headers: {
                   "Context-Type": "application/json",
                 },

@@ -6,6 +6,8 @@ import { ReservationContext } from '../context/reservation/reservationContext'
 import { types } from '../context/reservation/reservationReducer'
 import { useNavigate } from 'react-router-dom'
 import { dateFormatDMY, hourFormat } from '../helpers/dateFormat'
+import { urlGeneral } from '../helpers/connect_db'
+import { UserContext } from '../context/user/userContext'
 
 export const HoursPage = () => {
     const [reload, setReload] = useState(false)
@@ -18,7 +20,7 @@ export const HoursPage = () => {
     const [dataLoaded, setDataLoaded] = useState(false)
     const [consultationsData, setConsultationsData] = useState(null)
 
-    const urlConsultations = `http://localhost:4000/consultations/`
+    const urlConsultations = `${urlGeneral}consultations/`
 
 
     const handleHourSelection = async (id_hour) => {
@@ -32,7 +34,7 @@ export const HoursPage = () => {
                 Swal.fire({ title: 'Seleccione tipo de consulta', icon: 'info', timer: 3000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
             } else {
                 console.log("token:", jwtToken)
-                const urlHour = 'http://localhost:4000/hours/update'
+                const urlHour = `${urlGeneral}hours/update`
                 const newState = 'pending'
                 try {
                     const resp = await axios.put(urlHour, { id_hour, newState }, {
@@ -97,7 +99,7 @@ export const HoursPage = () => {
                 if (jwtToken !== null) {
                     const tokenDecodificado = jwt(jwtToken)
                     const userId = tokenDecodificado._id
-                    const urlPatient = `http://localhost:4000/users/${userId}/patients`
+                    const urlPatient = `${urlGeneral}users/${userId}/patients`
                     const resp = await axios.get(urlPatient, {
                         headers: {
                             'Content-Type': 'application/json',
@@ -157,9 +159,9 @@ export const HoursPage = () => {
     return (
         <main className=''>
             <section className='bg-verdeclaro p-4 row'>
-                <article className='col-6'>
+                <article className='col-12 col-lg-6 col-md-6 col-sm-12'>
                     <div className="input-group ">
-                        <label htmlFor="patient" className="input-group-text  bg-brown text-white">Tipo de atención</label>
+                        <label htmlFor="patient" className=" col-12 col-lg-4 col-sm-12 input-group-text  bg-brown text-white">Tipo de atención</label>
                         <select className="form-control col-3" id='consultation' name='consultation' required>
                             <option value="">Seleccione atención</option>
                             {consultationsData?.map((consultation, index) => {
@@ -170,7 +172,7 @@ export const HoursPage = () => {
                         </select>
                     </div>
                 </article>
-                <article className='col-6'>
+                <article className='col-12 col-lg-6 col-md-6 col-sm-12'>
                     <div className="input-group ">
 
                         {patientsData ?
@@ -186,8 +188,6 @@ export const HoursPage = () => {
                             </>
                             : ''}
                     </div>
-
-
                 </article>
             </section>
             <AvailableHours onHourSelect={handleHourSelection} reload={reload} />

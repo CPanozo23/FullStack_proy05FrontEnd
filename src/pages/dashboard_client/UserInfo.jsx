@@ -7,12 +7,12 @@ import UpEmailBtn from '../../components/buttons_client/UpEmailBtn'
 const UserInfo = ({ userData, setReload, patientsRelation}) => {
     return (
         <article className='row'>
-            <div className='py-2 col-5 align-items-center bg-warning'>
-                <h1 className='m-2 align-items-center bg-primary'>Bienvenid@ {userData.name} {userData.lastName}</h1>
+            <div className='py-2 col-12 col-lg-5 col-md-12 col-sm-12 align-items-center'>
+                <h1 className='m-2 align-items-center'>Bienvenid@ {userData.name} {userData.lastName}</h1>
             </div>
-            <div className='col-7 row align-items-center text-end p-0 m-0'>
-                <div className='bg-primary row text-end'>
-                <span className='col-3 fw-bold p-0 m-0 bg-warning'>RUN:{userData?.run}</span>
+            <div className='col-12 col-lg-7 col-md-12 col-sm-12 row align-items-center text-end p-0 m-0'>
+                <div className='row text-end'>
+                <span className='col-3 fw-bold p-0 m-0'>RUN:{userData?.run}</span>
                 <span className='col-3 fw-bold p-0 m-0'>🗓️ {dateFormatDMY(userData?.birthday)}</span>
                 <span className='col-6 fw-bold p-0 m-0'>✉️ {userData?.email}</span>
                 </div>

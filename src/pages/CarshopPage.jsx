@@ -3,6 +3,7 @@ import { ReservationContext } from '../context/reservation/reservationContext'
 import { types } from '../context/reservation/reservationReducer'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { urlGeneral } from '../helpers/connect_db'
 
 const Carshop = () => {
   const [reservationState, dispatch] = useContext(ReservationContext)
@@ -24,7 +25,7 @@ const Carshop = () => {
     try {
       const reservationsPromises = reservationState.map((reserva) => {
         return axios.post(
-          'http://localhost:4000/reservations/register',
+          `${urlGeneral}reservations/register`,
           {
             id_patient: reserva.id_patient,
             id_hour: reserva.id_hour,
@@ -72,7 +73,7 @@ const Carshop = () => {
       type: types.removeReservation,
       payload: { index: indexToRemove },
     })
-    const urlHour = 'http://localhost:4000/hours/update'
+    const urlHour = `${urlGeneral}hours/update`
     const newState = 'available'
     try {
       const resp = await axios.put(urlHour, { id_hour, newState }, {

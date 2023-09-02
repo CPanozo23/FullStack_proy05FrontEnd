@@ -22,7 +22,7 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
   const [state, dispatch] = useContext(UserContext)
   const inputF = inputForm_patient
   const relationship = [
-    'Soy el paciente','Padre', 'Padrastro', 'Madre','Madrastra', 'Hijo/a', 'Abuelo/a', 'Pareja', 'Tío/a', 'Primo/a', 'Sobrino/a', 'Amigo/a', 'Otro'
+    'Paciente','Padre', 'Madre','Hijo/a', 'Abuelo/a', 'Pareja', 'Tío/a', 'Primo/a', 'Sobrino/a', 'Padrastro', 'Madrastra', 'Amigo/a', 'Otro'
   ]
 
   const initialPatient = {
@@ -60,7 +60,7 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
   const handleRelationChange = async (e) => {
     const relation = e.target.value
     handleChange(e)
-    if(relation === 'Soy el paciente') {
+    if(relation === 'Paciente') {
     const { data } = await axios.get(`http://localhost:4000/users/${id}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -172,19 +172,6 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
       setIsFetching(false)
     }
   }
-  
-  
-  //setReload(true)
-  /*
-  const { data } = await axios.post(`http://localhost:4000/patients/register/${id}`, formPatient, {
-        headers: {
-          "Context-Type": "application/json",
-      Authorization: `Bearer ${jwtToken}`,
-        },
-      })
-      Swal.fire({ icon: 'success', title: 'Paciente agregado', timer: 3000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
-    */
-     // onClose()
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Agregar paciente" overlayClassName="ReactModal__Overlay__pt200"

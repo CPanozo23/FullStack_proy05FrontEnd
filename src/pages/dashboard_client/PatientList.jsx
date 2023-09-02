@@ -9,12 +9,12 @@ const PatientList = ({ patientsRelation, reservationData }) => {
         <article>
             <p className='fs-3'>Pacientes</p>
             {patientsRelation?.map((patientRelation, index) => (
-                <div className='row' key={index}>
-                    <div className='col-2 border'>{patientRelation.relationship}</div>
+                <div className={index % 2 === 0 ? 'row border bg-verdeclaro' : 'row border'} key={index}>
+                    <div className='col-6 col-lg-2 col-md-3 col-sm-6 py-2'>{patientRelation.relationship}</div>
 
                     {patientRelation.patientData && (
                         <>
-                            <div className='col-2 border'>
+                            <div className='col-6 col-lg-2 col-md-3 col-sm-6 py-2'>
                                 {patientRelation.patientData.name} {patientRelation.patientData.lastName} 
                             </div>
                             
@@ -25,19 +25,19 @@ const PatientList = ({ patientsRelation, reservationData }) => {
     )
 
     return (
-      <div className='col-6 border d-flex' key={item.id_patient}>
-        <div className='col-4 border'>
+      <div className='col-12 col-lg-8 col-md-6 d-flex py-2' key={item.id_patient}>
+        <div className='col-4'>
           Reservas pasadas: {totalReservationsPassed}
         </div>
-        <div className='col-6 border'>
+        <div className='col-8 fw-bold'>
         {reservationsFuture.length > 0 ? (
-    <>
+    <>Próximas sesiones:
       {reservationsFuture
         .sort((a, b) => new Date(a.hour.startTime) - new Date(b.hour.startTime))
         .map((reservation, index) => (
-          <span key={index}>
+          <span key={index} className='px-2'>
             {dateFormatDMY(reservation.hour.startTime)}{' '}
-            {hourFormat(reservation.hour.startTime)}
+            {hourFormat(reservation.hour.startTime)} hrs.
           </span>
         ))}
     </>

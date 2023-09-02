@@ -3,10 +3,9 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { UserContext } from '../../context/user/userContext';
 import { useNavigate } from 'react-router-dom';
-import RegisterBtn from '../buttons/RegisterBtn'
 import { types } from '../../context/user/userReducer';
 import jwt from "jwt-decode"
-
+import { urlGeneral } from '../../helpers/connect_db'
 Modal.setAppElement('#root');
 
 const LoginModal = ({ isOpen, onClose }) => {
@@ -32,7 +31,7 @@ const LoginModal = ({ isOpen, onClose }) => {
     setIsFetching(true)
 
     try {
-        const { data } = await axios.post('http://localhost:4000/users/login', user, {
+        const { data } = await axios.post(`${urlGeneral}users/login`, user, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -54,6 +53,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         confirmButtonColor: '#1E90FF',
         timerProgressBar: true,
     })
+    window.location.reload()
     } catch (error) {
       if (error.response && error.response.status) {
         Swal.fire({

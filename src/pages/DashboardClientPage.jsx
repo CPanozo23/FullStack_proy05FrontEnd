@@ -4,14 +4,9 @@ import { useContext, useEffect, useState } from 'react'
 import React from 'react'
 import axios from 'axios'
 import jwt from "jwt-decode"
-import UpEmailBtn from '../components/buttons_client/UpEmailBtn'
-import UpPWBtn from '../components/buttons_client/UpPWBtn'
-import AddPatientBtn from '../components/buttons_client/AddPatientBtn'
-import { dateFormatDMY } from '../helpers/dateFormat'
-import { getReservationInfo } from '../helpers/reservation_date'
 import UserInfo from './dashboard_client/UserInfo'
 import PatientList from './dashboard_client/PatientList'
-import SlideInfo from '../components/general/SlideInfo'
+import { urlGeneral } from '../helpers/connect_db'
 const Dashboard_client = () => {
     const navigate = useNavigate()
     const [userData, setUserData] = useState(null)
@@ -31,12 +26,11 @@ const Dashboard_client = () => {
 
     const tokenDecodificado = jwt(jwtToken)
     const userId = tokenDecodificado._id
-    const url = `http://localhost:4000/users/${userId}`
+    const url = `https://caro-back.onrender.com/users/${userId}`
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                //window.alert(reload)
                 const resp = await axios.get(url, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -77,7 +71,7 @@ const Dashboard_client = () => {
             <section className='container'>
                 {state?.user ? (
                     <>
-                        {dataLoaded ? ( //onPatientAdded={() => setPatientAdded(true)}
+                        {dataLoaded ? (
                             <UserInfo userData={userData} setReload={setReload} patientsRelation={patientsRelation} />
                         ) : (<p>Cargando datos de usuario...</p>)}
                         <hr />
@@ -87,7 +81,7 @@ const Dashboard_client = () => {
             </section>
             <section className='container'>
 
-                {dataLoaded ? ( //window.alert(patientsRelation.length)
+                {dataLoaded ? (
                     (patientsRelation.length===0 ? 'No hay pacientes agregados':
                     <PatientList patientsRelation={patientsRelation} reservationData={reservationData} />
                     )

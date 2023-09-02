@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import line from '/linea.svg'
 import axios from 'axios'
-import { NavLink } from 'react-router-dom'
 import { dateLongFormat, hourFormat } from '../../helpers/dateFormat'
+import { urlGeneral } from '../../helpers/connect_db'
 const AvailableHours = ({ onHourSelect, reload }) => {
     const [hoursData, setHoursData] = useState(null)
-    const url = `http://localhost:4000/hours/available`
+    const url = `${urlGeneral}hours/available`
 
     useEffect(() => {
         const fetchHoursData = async () => {

@@ -8,13 +8,14 @@ import { useNavigate } from 'react-router-dom'
 import { ReservationContext } from '../context/reservation/reservationContext'
 import { types } from '../context/reservation/reservationReducer'
 import { dateFormatDMY, hourFormat } from '../helpers/dateFormat'
+import { urlGeneral } from '../helpers/connect_db'
 
 const AttentionAdd = () => {
     const { id } = useParams()
     const [attentionData, setAttentionData] = useState(null)
     const [dataLoaded, setDataLoaded] = useState(false)
     const [patientsData, setPatientsData] = useState(null)
-    const url = `http://localhost:4000/consultations/${id}`
+    const url = `${urlGeneral}consultations/${id}`
     const [state, dispatch] = useContext(UserContext)
     const [reservationState, reservationDispatch] = useContext(ReservationContext);
     const jwtToken = sessionStorage.getItem('jwtToken')
@@ -28,7 +29,7 @@ const AttentionAdd = () => {
                 Swal.fire({ title: 'Seleccione a un paciente', icon: 'info', timer: 3000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
             } else {
                 console.log("token:", jwtToken)
-                const urlHour = 'http://localhost:4000/hours/update'
+                const urlHour = `${urlGeneral}hours/update`
                 const newState = 'pending'
                 try {
                     const resp = await axios.put(urlHour, { id_hour, newState }, {
@@ -97,7 +98,7 @@ const AttentionAdd = () => {
                 if (jwtToken !== null) {
                     const tokenDecoded = jwt(jwtToken)
                     const userId = tokenDecoded._id
-                    const urlPatient = `http://localhost:4000/users/${userId}/patients`
+                    const urlPatient = `${urlGeneral}users/${userId}/patients`
                     const resp = await axios.get(urlPatient, {
                         headers: {
                             'Content-Type': 'application/json',
