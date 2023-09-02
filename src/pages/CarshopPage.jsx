@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+fimport { useContext, useState, useEffect } from 'react'
 import { ReservationContext } from '../context/reservation/reservationContext'
 import { types } from '../context/reservation/reservationReducer'
 import { useNavigate } from 'react-router-dom'
@@ -92,13 +92,13 @@ const Carshop = () => {
     }
   }
   return (
-    <main className='container'>
+    <main className='container carshop'>
       <h2>Carrito de compra</h2>
       {reservationState.length === 0 ? (
         <p>El carrito está vacío</p>
       ) : (
         <section>
-          <form className='50vh'>
+          <form>
             {reservationState.map((reserva, index) => (
               <article key={index} className='border row'>
                 <div className='col-1 border'>N° {index + 1}</div>
