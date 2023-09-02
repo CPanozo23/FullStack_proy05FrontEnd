@@ -8,9 +8,9 @@ const Reservation_slide = () => {
         <section className="bg-rosado mt-0">
             <div className="container">
                 <h1 className="container fs-1">¿Quieres realizar una reserva para ti u otra persona que necesita apoyo?</h1>
-                <p className='container fs-3'>Disponibilidad desde: <span>Jueves 24 de agosto de 2023</span></p>
+                <p className='container fs-3'>¡Busca la mejor hora para atenderte según tus necesidades!</p>
             </div>
-            <div className="container ">
+            <div className="container py-2">
                 <p>Puedes gestionar tus citas y la de tus seres queridos en un mismo lugar, lo más importante es la salud mental tuya y de quienes te rodean.</p>
                 <LoginBtn />
                 <RegisterBtn />
