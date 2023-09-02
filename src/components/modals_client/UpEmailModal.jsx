@@ -5,7 +5,7 @@ import { UserContext } from '../../context/user/userContext';
 import { useNavigate } from 'react-router-dom';
 import { types } from '../../context/user/userReducer';
 import jwt from "jwt-decode"
-import { urlGeneral } from '../helpers/connect_db'
+import { urlGeneral } from '../../helpers/connect_db'
 
 Modal.setAppElement('#root');
 
