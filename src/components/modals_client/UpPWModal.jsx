@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import RegisterBtn from '../buttons/RegisterBtn'
 import { types } from '../../context/user/userReducer';
 import jwt from "jwt-decode"
+import { urlGeneral } from '../helpers/connect_db'
 
 Modal.setAppElement('#root')
 
@@ -35,7 +36,7 @@ const UpPWModal = ({ isOpen, onClose, id }) => {
 
     try {
       if(formPW.password === formPW.passwordVerify){
-        const { data } = await axios.put(`http://localhost:4000/users/${id}`, formPW, {
+        const { data } = await axios.put(`${urlGeneral}/users/${id}`, formPW, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,

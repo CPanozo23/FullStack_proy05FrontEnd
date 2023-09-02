@@ -14,11 +14,11 @@ const AvailableHours = ({ onHourSelect, reload }) => {
               headers: {
                 'Content-Type': 'application/json',
               },
-            });
+            })
             console.log(response.data.detail)
             setHoursData(response.data.detail)
           } catch (error) {
-            console.error('Error fetching user data:', error);
+            console.error('Error fetching user data:', error)
             Swal.fire({
               icon: 'error',
               title: 'Error ' + error.response.status,
@@ -26,12 +26,12 @@ const AvailableHours = ({ onHourSelect, reload }) => {
               timer: 3000,
               timerProgressBar: true,
               confirmButtonColor: '#1E90FF',
-            });
+            })
           }
-        };
-        fetchHoursData();
+        }
+        fetchHoursData()
         if (reload) {
-          fetchHoursData();
+          fetchHoursData()
         }
       }, [reload])
 

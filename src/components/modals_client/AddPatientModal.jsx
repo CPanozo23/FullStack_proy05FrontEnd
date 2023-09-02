@@ -3,14 +3,12 @@ import Modal from 'react-modal'
 import axios from 'axios'
 import { UserContext } from '../../context/user/userContext'
 import { useNavigate } from 'react-router-dom'
-import RegisterBtn from '../buttons/RegisterBtn'
-import { types } from '../../context/user/userReducer'
-import jwt from "jwt-decode"
 import region from '../../helpers/regions'
 import { inputForm_patient } from '../../helpers/inputForm_patient'
 import {dateFormatYMD } from '../../helpers/dateFormat'
 import { validateRun } from '../../helpers/validateRun'
 import moment from 'moment'
+import { urlGeneral } from '../helpers/connect_db'
 
 Modal.setAppElement('#root')
 
@@ -61,7 +59,7 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
     const relation = e.target.value
     handleChange(e)
     if(relation === 'Paciente') {
-    const { data } = await axios.get(`http://localhost:4000/users/${id}`, {
+    const { data } = await axios.get(`${urlGeneral}/users/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,
@@ -147,7 +145,7 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
         if (isRunRegistered) {
           Swal.fire({ icon: 'error', title: 'Ya existe', text:"Ya tienes un paciente registrado con mismo RUN", timer: 30000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
         } else {
-          const { data } = await axios.post(`http://localhost:4000/patients/register/${id}`, formPatient, {
+          const { data } = await axios.post(`${urlGeneral}/patients/register/${id}`, formPatient, {
         headers: {
           "Context-Type": "application/json",
       Authorization: `Bearer ${jwtToken}`,
@@ -232,7 +230,6 @@ export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelati
           {isFetching ? 'Cargando...' : 'Agregar paciente'}
         </button>
       </form>
-      Actualizar:¿mensaje de está seguro? confirmar y actualizar.
       <button type="button" onClick={onClose} className="btn btn-primary">
         Cerrar
       </button>

@@ -3,9 +3,9 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { UserContext } from '../../context/user/userContext';
 import { useNavigate } from 'react-router-dom';
-import RegisterBtn from '../buttons/RegisterBtn'
 import { types } from '../../context/user/userReducer';
 import jwt from "jwt-decode"
+import { urlGeneral } from '../helpers/connect_db'
 
 Modal.setAppElement('#root');
 
@@ -36,7 +36,7 @@ const UpEmailModal = ({ isOpen, onClose, id }) => {
 
     try {
       if(formEmail.email === formEmail.emailVerify){
-        const { data } = await axios.put(`http://localhost:4000/users/${id}`, formEmail, {
+        const { data } = await axios.put(`${urlGeneral}/users/${id}`, formEmail, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,
@@ -104,9 +104,6 @@ const UpEmailModal = ({ isOpen, onClose, id }) => {
           {isFetching ? 'Cargando...' : 'Actualizar'}
         </button>
       </form>
-      Actualizar:¿mensaje de está seguro? confirmar y actualizar. Actualizar token
-
-
       <button type="button" onClick={onClose} className="btn btn-primary">
         Cerrar
       </button>
