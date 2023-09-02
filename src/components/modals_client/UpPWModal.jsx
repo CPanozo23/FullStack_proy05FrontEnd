@@ -10,12 +10,9 @@ import jwt from "jwt-decode"
 Modal.setAppElement('#root')
 
 const UpPWModal = ({ isOpen, onClose, id }) => {
-  //window.alert("y a lo recibii:"+ id)
   const [isFetching, setIsFetching] = useState(false)
   const [state, dispatch] = useContext(UserContext)
   const jwtToken = sessionStorage.getItem('jwtToken');
-  console.log("el token es:", jwtToken)
-  console.log("el id es:", id)
   const navigate = useNavigate()
   const initialUser = {
     password: "",
@@ -30,7 +27,6 @@ const UpPWModal = ({ isOpen, onClose, id }) => {
       ...formPW,type:'pw',
       [e.target.name]: e.target.value
     })
-    console.log(formPW)
   }
 
   const handleSubmit = async (e) => {
@@ -47,37 +43,52 @@ const UpPWModal = ({ isOpen, onClose, id }) => {
         },
       })
 
-      console.log("la data: ", data)
-
       if (data.message==='User updated') {
-        console.log(data)
-        const tokenDecodificado = jwt(data.token)
-        console.log("decodificado: ", tokenDecodificado)
+        const tokenDecoded = jwt(data.token)
         sessionStorage.setItem('jwtToken', data.token)
         dispatch({
           type: types.setUserState,
-          payload: tokenDecodificado,
+          payload: tokenDecoded,
         })
-        window.alert("Contraseña actualizado")
+        Swal.fire({
+          icon: 'success',
+          title: 'Contraseña actualizado',
+          timer: 3000,
+          timerProgressBar: true,
+          confirmButtonColor: '#1E90FF',
+      })
         onClose()
-        //console.log(data.detail)
-        //return res.status(200).json({ data })
-        //return res.status(404).json({ message: 'User not found' });
-        //REEMPLAZAR TOKEN POR EL EMAIL ACTUALIZADO
-        /*      
-    */
-      }
 
-      //console.log("daaata: ", data)
+      }
     }else{
-      window.alert("no coinciden las contraseñas")
+      Swal.fire({
+        icon: 'success',
+        title: 'No coinciden las contraseñas',
+        timer: 3000,
+        timerProgressBar: true,
+        confirmButtonColor: '#1E90FF',
+    })
     }
     } catch (error) {
       
-      window.alert('Error PW')
-      window.alert("El error es" + error.response.status)
+      Swal.fire({
+        icon: 'error',
+        title: 'Error '+error.response.status,
+        text: 'Oops... Algo salió mal',
+        timer: 3000,
+        timerProgressBar: true,
+        confirmButtonColor: '#1E90FF',
+    })
+
       if (error.response.status === 400) {
-        window.alert("La contraseña debe tener al menos 8 caracteres y contener al menos un número, una letra minúscula y una mayúscula.")
+        Swal.fire({
+          icon: 'error',
+          title: 'Error '+error.response.status,
+          text: 'La contraseña debe tener al menos 8 caracteres y contener al menos un número, una letra minúscula y una mayúscula.',
+          timer: 8000,
+          timerProgressBar: true,
+          confirmButtonColor: '#1E90FF',
+      })
       }
       dispatch({
         type: types.setError,

@@ -1,13 +1,11 @@
 import { Route, Routes } from "react-router-dom"
-import Home from "../pages/Home"
-import StudiesExperience from "../pages/StudiesExperience"
-import Login from "../pages/Login"
-import Register from "../pages/Register"
-import Reservation from "../pages/Reservation"
-import Attention from "../pages/Attention"
-import Dashboard_client from "../pages/Dashboard_client"
-import Dashboard_admin from "../pages/Dashboard_admin"
+import Home from "../pages/HomePage"
+import StudiesExperience from "../pages/StudiesExperiencePage"
+import Attention from "../pages/AttentionPage"
+import DashboardClient from "../pages/DashboardClientPage"
 import AttentionAdd from "../pages/AttentionAdd"
+import HoursPage from "../pages/HoursPage"
+import CarshopPage from "../pages/CarshopPage"
 
 
 const MainRoutes = () => {
@@ -18,18 +16,14 @@ const jwtToken = sessionStorage.getItem('jwtToken');
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/studiesExperience' element={<StudiesExperience />} />
-            <Route path='/login' element={<Login />} />
             <Route path='/attentions' element={<Attention />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/reservation' element={<Reservation />} />
+            <Route path='/hours' element={<HoursPage />} />
+            <Route path='/carshop' element={<CarshopPage />} />
             <Route path='/attention/:id' element={<AttentionAdd />} />
 
             <Route path='/*' element={<h1>Not Found</h1>} />
-
             
-            <Route path='/dashboard-client' element={<Dashboard_client/>} />
-
-            <Route path='/dashboard-admin' element={<Dashboard_admin />} />
+            <Route path='/dashboard-client' element={<DashboardClient/>} />
 
         </Routes>
         //Con el type de usuario proteger

@@ -4,11 +4,10 @@ const LoginBtn = () => {
     const { isOpen, openModal, closeModal } = useModal()
     return (
         <>
-            <button type="button" className='btn btn-primary m-1' onClick={openModal}>Iniciar sesión</button>
-            {isOpen && (
-                <LoginModal isOpen={isOpen} onClose={closeModal} />
-            )}
+            <button type='button' className='btn btn-primary mx-1' onClick={openModal}>Iniciar sesión</button>
+            <LoginModal isOpen={isOpen} onClose={closeModal} />
         </>
+
     )
 
 }

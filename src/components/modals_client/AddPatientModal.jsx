@@ -1,17 +1,22 @@
-import React, { useState, useContext } from 'react';
-import Modal from 'react-modal';
-import axios from 'axios';
-import { UserContext } from '../../context/user/userContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react'
+import Modal from 'react-modal'
+import axios from 'axios'
+import { UserContext } from '../../context/user/userContext'
+import { useNavigate } from 'react-router-dom'
 import RegisterBtn from '../buttons/RegisterBtn'
-import { types } from '../../context/user/userReducer';
+import { types } from '../../context/user/userReducer'
 import jwt from "jwt-decode"
-import region from '../../helpers/regions';
-import { inputForm_patient } from '../../helpers/inputForm_patient';
-import {dateFormatYMD } from '../../helpers/dateFormat';
-Modal.setAppElement('#root');
+import region from '../../helpers/regions'
+import { inputForm_patient } from '../../helpers/inputForm_patient'
+import {dateFormatYMD } from '../../helpers/dateFormat'
+import { validateRun } from '../../helpers/validateRun'
+import moment from 'moment'
 
-const AddPatientModal = ({ isOpen, onClose, id }) => {
+Modal.setAppElement('#root')
+
+export const AddPatientModal = ({ isOpen, onClose, id, setReload, patientsRelation }) => {
+  const [run, setRun] = useState('')
+  const [runValid, setRunValid] = useState(false)
   
   const [isFetching, setIsFetching] = useState(false)
   const [state, dispatch] = useContext(UserContext)
@@ -21,20 +26,22 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
   ]
 
   const initialPatient = {
-    relationship: '', RUN: '', name: '', lastName: '', birthday: '',
+    relationship: '', run: '', name: '', lastName: '', birthday: '',
     email: '', phone: '', street: '', number_st: '',
     department: '', city: '', region: ''
   }
+  const currentDate = moment()
+  const formattedCurrentDate = currentDate.format('YYYY-MM-DD')
 
   const [isInputDisabled, setIsInputDisabled] = useState(true)
-  const [disabledInputs, setDisabledInputs] = useState([]);
+  const [disabledInputs, setDisabledInputs] = useState([])
   const [formPatient, setFormPatient] = useState(initialPatient)
 
-  const jwtToken = sessionStorage.getItem('jwtToken');
+  const jwtToken = sessionStorage.getItem('jwtToken')
 
   const navigate = useNavigate()
-  const [selectedRegion, setSelectedRegion] = useState(null); // Estado para almacenar la región seleccionada
-  const [selectedComuna, setSelectedComuna] = useState(null); // Estado para almacenar la comuna seleccionada
+  const [selectedRegion, setSelectedRegion] = useState(null)
+  const [selectedComuna, setSelectedComuna] = useState(null)
 
   const handleRegionChange = (e) => {
     const regionName = e.target.value
@@ -54,15 +61,12 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
     const relation = e.target.value
     handleChange(e)
     if(relation === 'Soy el paciente') {
-      window.alert(relation + id)
     const { data } = await axios.get(`http://localhost:4000/users/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,
         },})
-        console.log(data.detail)
-        console.log(data.detail.name)
-        const fieldsToDisable = ['RUN', 'name', 'lastName', 'email', 'birthday'];
+        const fieldsToDisable = ['run', 'name', 'lastName', 'email', 'birthday']
 
     const disabledFields = inputF.flatMap(group =>
       Object.keys(group).flatMap(title =>
@@ -70,15 +74,15 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
           .filter(input => fieldsToDisable.includes(input.name))
           .map(input => input.name)
       )
-    );
+    )
 
-    setIsInputDisabled(true);
-    setDisabledInputs(fieldsToDisable);
+    setIsInputDisabled(true)
+    setDisabledInputs(fieldsToDisable)
 
     setFormPatient({
       ...formPatient,
       relationship:relation,
-      RUN: data.detail.run,
+      run: data.detail.run,
       name: data.detail.name,
       lastName: data.detail.lastName,
       email: data.detail.email,
@@ -86,54 +90,101 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
     })
       
   }else{
-    setIsInputDisabled(false);
-    setDisabledInputs([]);
+    setIsInputDisabled(false)
+    setDisabledInputs([])
     setFormPatient({
       ...formPatient,
       relationship:relation,
-      RUN: '',
-      name: '',
-      lastName: '',
-      email: '',
-      birthday: '',
-    });
+      run: '', name: '', lastName: '', email: '', birthday: '',
+    })
   }
 }
-  
-
   const handleChange = (e) => {
+    if (e.target.name === 'run') {
+      const input = e.target.value
+      const filteredInput = input.replace(/[^0-9kK]/gi, '') 
+      setRun(filteredInput)
+      setFormPatient({
+        ...formPatient,
+        [e.target.name]: filteredInput
+      })
+      const newRun = e.target.value
+      setRun(newRun)
+      const isValid = validateRun(newRun)
+      setRunValid(isValid)
+    } else {
+    
     setFormPatient({
       ...formPatient,
       [e.target.name]: e.target.value
     })
     console.log(formPatient)
   }
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsFetching(true)
-    console.log(formPatient)
-    window.alert(formPatient.relationship)
-    
+  
     try {
-      const { data } = await axios.post(`http://localhost:4000/patients/register/${id}`, formPatient, {
-            headers: {
-              "Context-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-            },
-          })
+      setRunValid(false)
+  
+      console.log("inicia: ", runValid)
+      console.log(formPatient.run)
+  
+      const isValid = validateRun(formPatient.run)
+  
+      if (!isValid) {
+        Swal.fire({ icon: 'error', title: 'RUN inválido', timer: 30000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
+      } else {
+        console.log(patientsRelation)
+        
+        const isRunRegistered = patientsRelation?.some((patientRelation) => {
+          return patientRelation.patientData.run === formPatient.run
+        })
+        
+        if (isRunRegistered) {
+          Swal.fire({ icon: 'error', title: 'Ya existe', text:"Ya tienes un paciente registrado con mismo RUN", timer: 30000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
+        } else {
+          const { data } = await axios.post(`http://localhost:4000/patients/register/${id}`, formPatient, {
+        headers: {
+          "Context-Type": "application/json",
+      Authorization: `Bearer ${jwtToken}`,
+        },
+      })
+      Swal.fire({ icon: 'success', title: 'Paciente agregado', timer: 3000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
+      setReload(true)
+     onClose()
+        }
+        
+        
+        
+        
+        
 
-          window.alert("Paciente agregado")
-        onClose()
-
+      }
+  
+  
     } catch (error) {
-      window.alert(error)
-    }finally{
-    setIsFetching(false)
-
+      Swal.fire({ icon: 'error', title: 'Error ' + error.response.status, text: 'Oops... Algo salió mal', timer: 3000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
+    } finally {
+      setIsFetching(false)
     }
   }
-
+  
+  
+  //setReload(true)
+  /*
+  const { data } = await axios.post(`http://localhost:4000/patients/register/${id}`, formPatient, {
+        headers: {
+          "Context-Type": "application/json",
+      Authorization: `Bearer ${jwtToken}`,
+        },
+      })
+      Swal.fire({ icon: 'success', title: 'Paciente agregado', timer: 3000, timerProgressBar: true, confirmButtonColor: '#1E90FF', })
+    */
+     // onClose()
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Agregar paciente" overlayClassName="ReactModal__Overlay__pt200"
@@ -195,8 +246,6 @@ const AddPatientModal = ({ isOpen, onClose, id }) => {
         </button>
       </form>
       Actualizar:¿mensaje de está seguro? confirmar y actualizar.
-
-
       <button type="button" onClick={onClose} className="btn btn-primary">
         Cerrar
       </button>

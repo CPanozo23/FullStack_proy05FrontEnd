@@ -19,28 +19,28 @@ export function dateFormatYMD(dateF) {
 }
 
 export function dateLongFormat(dateF) {
-    const date = new Date(dateF); // Convertir la cadena a un objeto Date
+    const date = new Date(dateF)
 
     const optionsDate = {
-        weekday: 'long', // Día de la semana en formato largo (ejemplo: "miércoles")
-        day: 'numeric', // Día del mes en formato numérico (ejemplo: "30")
-        month: 'long', // Mes en formato largo (ejemplo: "agosto")
-        year: 'numeric', // Año en formato numérico (ejemplo: "2023")
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
     }
 
-    const formattedDate = date.toLocaleDateString('es-CL', optionsDate);
-    return formattedDate;
+    const formattedDate = date.toLocaleDateString('es-CL', optionsDate)
+    return formattedDate
 }
 
 export function hourFormat(dateF) {
-    const date = new Date(dateF); // Convertir la cadena a un objeto Date
+    const date = new Date(dateF)
 
     const optionsTime = {
-        hour: 'numeric', // Hora en formato numérico (ejemplo: "02")
-        minute: 'numeric', // Minutos en formato numérico (ejemplo: "54")
+        hour: 'numeric',
+        minute: 'numeric',
     }
 
-    const formattedTime = date.toLocaleTimeString('es-CL', optionsTime);
+    const formattedTime = date.toLocaleTimeString('es-CL', optionsTime)
     
-    return formattedTime;
+    return formattedTime
 }

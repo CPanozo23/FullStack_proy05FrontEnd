@@ -3,7 +3,7 @@ export const getReservationInfo = (reservations) => {
     const reservationsPassed = reservations.filter(reservation => {
         const startTime = new Date(reservation.hour.startTime)
         return startTime < now
-    });
+    })
     const reservationsFuture = reservations.filter(reservation => {
         const startTime = new Date(reservation.hour.startTime)
         return startTime >= now

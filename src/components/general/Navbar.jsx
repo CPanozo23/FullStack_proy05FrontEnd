@@ -1,21 +1,21 @@
 import { NavLink } from "react-router-dom"
 import { useContext, useEffect  } from "react"
 import { UserContext } from "../../context/user/userContext"
-import Logout from "./Logout"
 import LoginBtn from "../buttons/LoginBtn"
 import LogoutBtn from "../buttons/LogoutBtn"
 import jwt from "jwt-decode"
 import { types } from '../../context/user/userReducer'
+import RegisterBtn from "../buttons/RegisterBtn"
 
 const Navbar = () => {
   const [state,dispatch] = useContext(UserContext)
   useEffect(() => {
-    const jwtToken = sessionStorage.getItem('jwtToken');
+    const jwtToken = sessionStorage.getItem('jwtToken')
         if (jwtToken && !state) {
-          const tokenDecodificado = jwt(jwtToken);
+          const tokenDecoder = jwt(jwtToken);
           dispatch({
             type: types.setUserState,
-            payload: tokenDecodificado,
+            payload: tokenDecoder,
           })
         }
   })
@@ -36,40 +36,21 @@ const Navbar = () => {
         <li className="nav-item">
         <NavLink className="nav-link" to="/studiesExperience">Formación y experiencia</NavLink>
         </li>
-        <li className="nav-item dropdown">
+        <li className="nav-item">
         <NavLink className="nav-link" aria-current="page" to="/attentions">Atención psicológica</NavLink>
         </li>
-        
-        { (state?.user) ? 
-                <li className="nav-item dropdown">
-                <NavLink
-                    className="nav-link dropdown-toggle"
-                    to="/dashboard-client" // Redirige aquí
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  ><span className="fw-bold text-primary">
-                    {state.user.name} {state.user.lastName}</span>
-                  </NavLink>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <NavLink className="dropdown-item" activeclassname="active" to={`/dashboard-${state.user.typeUser}`}>
-                    Dashboard
-                    </NavLink>
-                    <NavLink className="dropdown-item" activeclassname="active" to="/dropdown/another-action">
-                      Another Action
-                    </NavLink>
-                  </div>
-                </li>
-                : '' }
-
-        
-        
+        <li className="nav-item">
+        <NavLink className="nav-link" aria-current="page" to="/hours">Horas disponibles</NavLink>
+        </li>
         {(state?.user) 
-                ? <li className="nav-item">
+                ? <><li className="nav-item">
                 <NavLink className="nav-link" aria-current="page" to={`/dashboard-${state.user.typeUser}`}><span className="fw-bold text-primary">Dashboard</span></NavLink>
                 </li>
+                <li className="nav-item">
+                <NavLink className="nav-link" aria-current="page" to={`/carshop`}><span className="fw-bold text-primary">Carrito</span></NavLink>
+                </li>
+                </>
+                
                 : ''  }
 
       </ul>
@@ -77,7 +58,12 @@ const Navbar = () => {
       
       {(state?.user) 
                 ? <LogoutBtn />
-                : <LoginBtn />  }
+                :
+                <>
+                <LoginBtn /> 
+                <RegisterBtn /> 
+                </> 
+                 }
       </div>
     </div>
   </div>

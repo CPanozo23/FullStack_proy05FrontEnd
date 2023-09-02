@@ -4,10 +4,8 @@ const RegisterBtn = () => {
   const { isOpen, openModal, closeModal } = useModal()
 return(
     <>
-    <button type="button" className='btn btn-primary m-1' onClick={openModal}>Crear cuenta</button>
-            {isOpen && (
-              <RegisterModal isOpen={isOpen} onClose={closeModal} />
-            )}
+    <button type='button' className='btn btn-primary mx-1' onClick={openModal}>Crear cuenta</button>
+      <RegisterModal isOpen={isOpen} onClose={closeModal} />
             </>
 )
 

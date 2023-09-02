@@ -10,7 +10,6 @@ import jwt from "jwt-decode"
 Modal.setAppElement('#root');
 
 const UpEmailModal = ({ isOpen, onClose, id }) => {
-  //window.alert("y a lo recibii:"+ id)
   const [isFetching, setIsFetching] = useState(false)
   const [state, dispatch] = useContext(UserContext)
   const jwtToken = sessionStorage.getItem('jwtToken');
@@ -29,24 +28,14 @@ const UpEmailModal = ({ isOpen, onClose, id }) => {
       ...formEmail,type:'email',
       [e.target.name]: e.target.value
     })
-    console.log(formEmail)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('jj')
     setIsFetching(true)
 
     try {
-      console.log(formEmail.email)
-      console.log(formEmail.emailVerify)
-      //1 validar que es el mismo correo
       if(formEmail.email === formEmail.emailVerify){
-        //2 validar que no exista otro usuario con el mismo correo
-
-        //window.alert(`http://localhost:4000/users/${id}`)
-        window.alert(formEmail)
-        //3 cambiar correo
         const { data } = await axios.put(`http://localhost:4000/users/${id}`, formEmail, {
         headers: {
           'Content-Type': 'application/json',
@@ -54,38 +43,39 @@ const UpEmailModal = ({ isOpen, onClose, id }) => {
         },
       })
 
-      console.log("la data: ", data)
-        console.log(data)
-        const tokenDecodificado = jwt(data.token)
-        console.log("decodificado: ", tokenDecodificado)
+        const tokenDecoded = jwt(data.token)
         sessionStorage.setItem('jwtToken', data.token)
         dispatch({
           type: types.setUserState,
-          payload: tokenDecodificado,
+          payload: tokenDecoded,
         })
-        window.alert("Correo actualizado")
+        Swal.fire({
+          icon: 'success',
+          title: 'Correo actualizado',
+          timer: 3000,
+          timerProgressBar: true,
+          confirmButtonColor: '#1E90FF',
+      })
         onClose()
-        //console.log(data.detail)
-        //return res.status(200).json({ data })
-        //return res.status(404).json({ message: 'User not found' });
-        //REEMPLAZAR TOKEN POR EL EMAIL ACTUALIZADO
-        /*      
-    */
-      
-
-      //console.log("daaata: ", data)
-
-      
-      
     }else{
-      window.alert("no coincide emails")
+      Swal.fire({
+        icon: 'error',
+        title: 'No coincide el email',
+        timer: 3000,
+        timerProgressBar: true,
+        confirmButtonColor: '#1E90FF',
+    })
     } 
 
     } catch (error) {
-      window.alert('Error login')
-      window.alert("El error es "+ error.response.status)
       if (error.response.status === 400) {
-        window.alert("Ya existe un usuario con ese email")
+        Swal.fire({
+          icon: 'error',
+          title: 'Ya existe un usuario con ese email',
+          timer: 3000,
+          timerProgressBar: true,
+          confirmButtonColor: '#1E90FF',
+      })
       }
       dispatch({
         type: types.setError,

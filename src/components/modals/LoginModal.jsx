@@ -25,13 +25,11 @@ const LoginModal = ({ isOpen, onClose }) => {
       ...user,
       [e.target.name]: e.target.value
     })
-    console.log(user)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsFetching(true)
-    console.log("en submit")
 
     try {
         const { data } = await axios.post('http://localhost:4000/users/login', user, {
@@ -39,22 +37,35 @@ const LoginModal = ({ isOpen, onClose }) => {
           'Content-Type': 'application/json',
         },
       })
-      console.log("daaata: ", data)
-      const tokenDecodificado = jwt(data.token)
-      console.log("decodificado: ", tokenDecodificado)
+
+      const tokenDecoded = jwt(data.token)
+
 
       sessionStorage.setItem('jwtToken', data.token)
 
       dispatch({
         type: types.setUserState,
-        payload: tokenDecodificado,
+        payload: tokenDecoded,
       })
-      window.alert('Usuario logueado')
-      console.log('tokenDecodificado')
-      console.log(tokenDecodificado)
-      navigate(`/dashboard-client`)      
+      Swal.fire({
+        title: '¡Bienvenido!',
+        icon: 'success',
+        timer: 2000,
+        confirmButtonColor: '#1E90FF',
+        timerProgressBar: true,
+        //showCloseButton: true,showCancelButton: true, focusConfirm: false,
+    })
+      
+      //navigate(`/dashboard-client`)      
     } catch (error) {
-      window.alert('Error login')
+      Swal.fire({
+        icon: 'error',
+        title: 'Error '+error.response.status,
+        text: 'Ingrese de nuevo usuario y contraseña',
+        timer: 3000,
+        timerProgressBar: true,
+        confirmButtonColor: '#1E90FF',
+    })
       dispatch({
         type: types.setError,
         payload: error,
@@ -81,7 +92,6 @@ const LoginModal = ({ isOpen, onClose }) => {
           {isFetching ? 'Cargando...' : 'Ingresar'}
         </button>
       </form>
-      <RegisterBtn />
 
       <button type="button" onClick={onClose} className="btn btn-primary">
         Cerrar

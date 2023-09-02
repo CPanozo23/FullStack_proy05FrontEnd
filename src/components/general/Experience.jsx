@@ -6,8 +6,8 @@ const Experience = () => {
             <section className="">
                 <h1>Experiencia</h1>
                 {experience_info.map((exps, index) => (
-                    <article>
-                        <div className='row' key={index}>
+                    <article key={index}>
+                        <div className='row'>
                             <div key={index} className='col-1'>
                                 <img src={exps.img} className='profileImg' />
                             </div>
